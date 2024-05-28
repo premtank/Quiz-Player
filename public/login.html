@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Quiz Master</title>
+	<link rel="stylesheet" type="text/css" href="css/Login.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+	<h1 class="py-3" style="color: white; font-size: 400%; font-weight: bolder;">Quiz Player</h1>
+
+	<div class="row">
+		<div class="col-md-6 text-center">
+			<p id="p1">A quiz is an interactive assessment tool designed to test knowledge.<br>understanding, and
+				retention of information on a specific subject.<br><br>A quiz plays a vital role in improving person's
+				knowledge about<br>the topic very precisely.</p>
+
+			<p id="p2">Discover and play quiz on various topics. Also you can conduct<br>school/college type mcq tests.
+				Save your high-scores by<br>creating an account.</p><br>
+
+			<button id="gs"><a href="signup.html" style="text-decoration: none;">Get Started</a></button>
+		</div>
+		<div class="col-md-6 text-center">
+			<div class="Contener">
+
+				<h2 id="h11">
+					<center>LOG IN</center>
+				</h2>
+
+				<center>
+					<form id="loginForm">
+
+						<div class="form-ope">
+
+							<label></label>
+
+							<input type="email" name="email" placeholder="Enter your email...." required>
+
+						</div><br>
+
+						<div class="form-ope">
+
+							<label></label>
+
+							<input type="Password" name="password" placeholder="Enter your password...." required>
+
+						</div><br>
+
+						<div class="submit">
+
+							<button id="btn" type="submit">LOG IN</button>
+				</center>
+			</div>
+
+			</form>
+
+			<p style="margin-right: 200px;">Don't have any account? Click here to <a href="signup.html"
+					style="color: black;">Sign Up</a></p>
+
+		</div>
+		</center>
+	</div>
+	</div>
+</body>
+<script>
+	document.getElementById('loginForm').addEventListener('submit', async (event) => {
+		event.preventDefault();
+
+		const formData = new FormData(event.target);
+		const email = formData.get('email');
+		const password = formData.get('password');
+
+		try {
+			const response = await fetch('http://localhost:3000/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ email, password })
+			});
+
+			const { accessToken, refreshToken } = await response.json();
+
+			// Store the token in local storage
+			window.localStorage.setItem('accessToken', accessToken);
+			window.localStorage.setItem('refreshToken', refreshToken);
+
+			// Redirect to home page or perform other actions
+			window.location.href = '/home.html';
+		} catch (error) {
+			console.error('Login failed:', error);
+		}
+	});
+</script>
+
+</html>

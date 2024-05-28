@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Master</title>
+    <style>
+
+        body{
+			background-image: url('../img/quiz1.jpg');
+			background-repeat: no-repeat;
+			background-size: 105%;
+		}
+
+        h1{
+			color: white;
+			font-size: 50px;
+			font-family: Arial, Helvetica, sans-serif;
+			margin-left: 50px;
+			width: fit-content;
+		}
+
+        #p{
+            margin-left: 35%;
+            margin-top: 11%;
+        }
+
+        button {
+    background-color: #2ecc71;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+</style>
+
+</head>
+<body>
+    <h1>Quiz Player</h1>
+    <div id="p">
+        <h1>THANK YOU!</h1>
+        <h2 style="margin-left: 5%;">Your score has been submitted!</h2>
+        <center><a href="home.html"><button style="margin-right: 57%; margin-top: 5%;">HOME</button></a></center>
+        <center><a href="login.html"><button id="logoutButton" style="margin-right: 57%; margin-top: 5%;">Logout</button></a></center>
+    </div>
+</body>
+
+<script>
+    // JavaScript for the client side
+document.getElementById('logoutButton').addEventListener('click', function() {
+    fetch('/logout', {
+        method: 'POST',
+        credentials: 'include' // This ensures cookies are sent with the request
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+        sessionStorage.clear();
+        window.location.href = 'login.html';
+    })
+    .catch(error => {
+        console.error('Logout failed', error);
+    });
+});
+
+</script>
+</html>

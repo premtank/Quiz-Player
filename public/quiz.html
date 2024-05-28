@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Master</title>
+  <link rel="stylesheet" type="text/css" href="css/quiz.css">
+</head>
+
+<body>
+
+  <h1 class="header">Quiz Player</h1>
+  <div id="quiz-container">
+    <!-- <center>
+      <h1>QUIZ MASTER</h1>
+    </center> -->
+    <center>
+      <div id="quiz" class="question"></div>
+    </center>
+    <ul id="options" class="options"></ul>
+    <button onclick="nextQuestion()" id="nextButton" style="margin-top: 10px;">Next</button>
+    <button onclick="submitQuiz()" id="submitButton" style="display: none;">Submit</button>
+    <div id="result"></div>
+    <div id="feedback" class="feedback" style="position: relative;"></div>
+    <center> <button id="restartButton" onclick="restartQuiz()" style="display: none;">Restart</button></center>
+    <center> <a href="quizEnd.html"><button id="submitButton" onclick="submitQuiz()">Submit</button></a></center>
+
+  </div>
+
+  <div id="timer">Time: <span id="time"></span></div>
+
+</body>
+
+<script>
+  // Function to initialize the quiz
+  function initializeQuiz() {
+
+    shuffleQuestions();
+    displayQuestion();
+    startTimer();
+
+  }
+  let currentQuestion = 0;
+  let score = 0;
+  let timer;
+  let timeLeft = 180; // seconds
+
+  function submitQuiz(){
+    const token = localStorage.getItem('token');
+    console.log(token)
+    // Include token in request headers
+    fetch('http://localhost:3000/storeScore', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ score: score, category:category })
+    })
+      .then(response => {
+        console.log('success')
+      });
+      resultElement.textContent = `Your Score: ${score} out of ${questions.length}`;  
+
+  }
+
+  function shuffleQuestions() {
+    questions.sort(() => Math.random() - 0.5);
+  }
+
+  function displayQuestion() {
+    const quizElement = document.getElementById("quiz");
+    const optionsElement = document.getElementById("options");
+    const feedbackElement = document.getElementById("feedback");
+    feedbackElement.textContent = "";
+
+    const currentquestions = questions[currentQuestion];
+
+    quizElement.textContent = currentquestions.question;
+    optionsElement.innerHTML = "";
+
+    currentquestions.options.forEach((option, index) => {
+      const li = document.createElement("li");
+      li.textContent = option;
+      li.onclick = () => checkAnswer(option);
+      optionsElement.appendChild(li);
+    });
+  }
+
+  function checkAnswer(selectedAnswer) {
+    const feedbackElement = document.getElementById("feedback");
+    const currentquestions = questions[currentQuestion];
+
+    if (selectedAnswer === currentquestions.correctAnswer) {
+      feedbackElement.textContent = "Correct!";
+      feedbackElement.classList.add("correct");
+      score++;
+    } else {
+      feedbackElement.textContent = "Wrong! The correct answer is: " + currentquestions.correctAnswer;
+      feedbackElement.classList.remove("correct");
+    }
+
+    // Disable further clicks on options
+    const options = document.querySelectorAll(".options li");
+    options.forEach(option => option.onclick = null);
+  }
+
+  function nextQuestion() {
+    const feedbackElement = document.getElementById("feedback");
+    feedbackElement.textContent = "";
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+      displayQuestion();
+    } else {
+      endQuiz();
+    }
+  }
+
+  function startTimer() {
+    timer = setInterval(() => {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+
+      // Display minutes and seconds separately
+      document.getElementById("time").textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+      timeLeft--;
+
+      if (timeLeft < 0) {
+        endQuiz();
+      }
+    }, 1000);
+  }
+
+
+  function endQuiz() {
+    clearInterval(timer);
+    displayResult();
+  }
+
+  function displayResult() {
+    const resultElement = document.getElementById("result");
+    resultElement.textContent = `Your Score: ${score} out of ${questions.length}`;
+    document.getElementById("nextButton").style.display = "none";
+  }
+
+
+  function restartQuiz() {
+    // Clear or hide the previous result output
+    const resultElement = document.getElementById("result");
+    resultElement.textContent = "";
+
+    currentQuestion = 0;
+    score = 0;
+    timeLeft = 180;
+    initializeQuiz();
+
+    // Hide the restart button after restarting
+    document.getElementById("restartButton").style.display = "none";
+    document.getElementById("nextButton").style.display = "inline";
+  }
+
+  function endQuiz() {
+    clearInterval(timer);
+    displayResult();
+
+    // Show the restart button after the quiz ends
+    document.getElementById("restartButton").style.display = "block";
+  }
+
+
+  // Function to parse query parameters from URL
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  // Load the appropriate JavaScript file based on the category query parameter
+  const category = getQueryParam('category');
+
+
+  // Call the initializeQuiz function when the DOM is ready
+  document.addEventListener("DOMContentLoaded", initializeQuiz);
+
+  // Dynamically create a <script> element for defence.js
+  const script = document.createElement('script');
+  script.src = `src/${category}.js`;
+
+  // Set the onload event to start the quiz after defence.js has been loaded
+  script.onload = function () {
+    initializeQuiz();
+  };
+
+  // Append the defenceScript to the <body> of the document
+  document.body.appendChild(script);
+
+</script>
+
+
+
+</html>

@@ -1,0 +1,193 @@
+body{
+    background-image: url('../img/quiz1.jpg');
+    background-repeat: no-repeat;
+    background-size: 105%;
+}
+
+h1{
+    color: white;
+    font-size: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+.b1{
+    font-family: Arial, Helvetica, sans-serif;
+    width: fit-content;
+    text-align: right;
+    margin-top: -4.169%;
+    margin-left: 92%;
+    border: 3px solid white;
+    padding: 5px;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+    border-bottom-left-radius: 5%;
+    border-bottom-right-radius: 5%;
+}
+
+.b1:hover{
+    background-color: #56a5eb;
+    cursor: pointer;	
+    transition: 0.3s;
+    
+}
+
+#sl{
+    background: none;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-size: 15px;
+}		
+
+#sl:hover{
+    background-color: #56a5eb;
+    cursor: pointer;
+    transition: 0.3s;
+    transform: translateZ(10px) scale(1.15);
+}
+
+.b2{
+    font-family: Arial, Helvetica, sans-serif;
+    width: fit-content;
+    text-align: right;
+    margin-top: -2.3%;
+    margin-left: 87%;
+    border: 3px solid white;
+    padding: 5px;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+    border-bottom-left-radius: 5%;
+    border-bottom-right-radius: 5%;
+}
+
+.b2:hover{
+    background-color: #56a5eb;
+    cursor: pointer;	
+    transition: 0.3s;
+}
+
+#lg{
+    background: none;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-size: 15px;
+}		
+
+#lg:hover{
+    background-color: #56a5eb;
+    cursor: pointer;
+    transition: 0.3s;
+    transform: translateZ(10px) scale(1.15);
+}
+
+u{
+    text-decoration-color: #56a5eb;
+}
+
+#h11{
+    color: black;
+    font-weight: 1;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.Contener { margin-top: 80px; border-radius: 10px; position: relative; padding: 25px; background-color: #fff; width: 20%;
+
+opacity: 0.8;
+
+justify-content: space-around;
+
+align-items: center;
+
+}
+
+.form-ope {
+
+display: inline-block;
+
+width: 65%;
+
+}
+
+.form-ope > input {
+padding: 5px;
+
+width: 100%;
+
+}
+
+.btn {
+
+background-color: rgb(4, 132, 236);
+
+border: none;
+
+border-radius: 5px;
+
+padding: 7px;
+
+margin-top: 20px;
+
+color: #fff;
+
+width: 100px;
+
+}
+
+.btn:hover{
+
+cursor: pointer;
+
+opacity: 0.5;
+
+}
+
+@media only screen and (max-width:500px) {
+
+.Contener{
+
+flex-wrap: wrap;
+
+}
+
+.form-div1{
+
+flex-wrap: wrap;
+size: 20%;
+
+}
+
+.form-div-2{
+
+flex-wrap: wrap;
+
+}
+
+.form-ope{
+
+flex-wrap: wrap;
+size: 20%;
+
+}
+
+.submit{
+
+flex-wrap: wrap;
+
+}
+
+label{
+
+flex-wrap: wrap;
+
+}
+
+input{
+
+flex-wrap: wrap;
+
+}
+
+}
